@@ -52,56 +52,19 @@ import {{{packageName}}}
 
 Please follow the [installation procedure](#installation--usage) and then run the following:
 
-```python
-from pprint import pprint
 {{#apiInfo}}
 {{#apis}}
 {{#-first}}
-{{#hasHttpSignatureMethods}}import datetime{{/hasHttpSignatureMethods}}
-import {{{packageName}}}
-from {{apiPackage}} import {{classVarName}}
 {{#operations}}
 {{#operation}}
 {{#-first}}
-{{#imports}}
-{{{.}}}
-{{/imports}}
-{{> python_doc_auth_partial}}
-
-# Enter a context with an instance of the API client
-{{#hasAuthMethods}}
-with {{{packageName}}}.ApiClient(configuration) as api_client:
-{{/hasAuthMethods}}
-{{^hasAuthMethods}}
-with {{{packageName}}}.ApiClient() as api_client:
-{{/hasAuthMethods}}
-    # Create an instance of the API class
-    # Example passing only required parameters
-    api_instance = {{classVarName}}.{{{classname}}}(api_client)
-{{#requiredParams}}
-{{^defaultValue}}
-    {{paramName}} = {{{example}}} # {{{dataType}}} | {{{description}}}
-{{/defaultValue}}
-{{/requiredParams}}
-
-    try:
-{{#summary}}
-        # {{{.}}}
-{{/summary}}
-{{#returnType}}
-        api_response = {{/returnType}}api_instance.{{{operationId}}}({{#requiredParams}}{{^defaultValue}}{{paramName}}{{^-last}}, {{/-last}}{{/defaultValue}}{{/requiredParams}})
-{{#returnType}}
-        pprint(api_response)
-{{/returnType}}
-    except {{{packageName}}}.ApiException as e:
-        print("Exception when calling {{classname}}->{{operationId}}: %s\n" % e)
+{{> api_doc_example }}
 {{/-first}}
 {{/operation}}
 {{/operations}}
 {{/-first}}
 {{/apis}}
 {{/apiInfo}}
-```
 
 ## Documentation for API Endpoints
 
@@ -150,13 +113,13 @@ Class | Method | HTTP request | Description
 {{#scopes}} - **{{{scope}}}**: {{{description}}}
 {{/scopes}}
 {{/isOAuth}}
-
 {{/authMethods}}
 
+{{#apiInfo}}{{#apis}}{{#-last}}{{#infoEmail}}
 ## Author
 
-{{#apiInfo}}{{#apis}}{{#-last}}{{infoEmail}}
-{{/-last}}{{/apis}}{{/apiInfo}}
+{{this}}
+{{/infoEmail}}{{/-last}}{{/apis}}{{/apiInfo}}
 
 ## Notes for Large OpenAPI documents
 If the OpenAPI document is large, imports in {{{packageName}}}.apis and {{{packageName}}}.models may fail with a
